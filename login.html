@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Face Recognition</title>
+    <link rel="stylesheet" href="login_register.css">
+    <style>
+        .form-container {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 500px;
+            margin: auto;
+            margin-left: 60px;
+        }
+        .form-container h2 {
+            color: #c79529;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        .form-container input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+            transition: 0.3s;
+        }
+        .form-container input:focus {
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        .form-container button {
+            width: 100%;
+            padding: 12px;
+            background: #ff5722;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: 0.4s;
+        }
+        .form-container button:hover {
+            background: #e64a19;
+        }
+        .form-container .links {
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .form-container .links a {
+            color: rgb(129, 199, 17);
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        .form-container .links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <img src="/assets/logo-modern.png" alt="" id="logo">
+    <div class="container">
+        <img src="/assets/front-bg-img.jpg" alt="" id="bg-img">
+        <div class="form-container">
+            <h2>Face & Image Recognition System</h2>
+            <form action="/login" method="POST">
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="password" name="password" placeholder="Password" required>
+               <a href="/welcome.html"><button type="submit">Login</button></a>
+            </form>
+            <div class="links">
+                <a href="/register.html">Register</a>
+                <a href="#">Forgot Password?</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
