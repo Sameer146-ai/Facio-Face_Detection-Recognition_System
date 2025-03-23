@@ -69,10 +69,10 @@
         <img src="/assets/front-bg-img.jpg" alt="" id="bg-img">
         <div class="form-container">
             <h2>Face & Image Recognition System</h2>
-            <form action="/login" method="POST">
-                <input type="text" name="username" placeholder="Username" required>
-                <input type="password" name="password" placeholder="Password" required>
-               <a href="/welcome.html"><button type="submit">Login</button></a>
+            <form action="/welcome.html" name="RegForm" onsubmit="return validateForm(event)">
+                <input type="email" name="EMail" placeholder="Username" required>
+                <input type="password" name="Password" placeholder="Password" required>
+               <a href="welcome.html"><button type="submit">Login</button></a>
             </form>
             <div class="links">
                 <a href="/register.html">Register</a>
@@ -80,5 +80,32 @@
             </div>
         </div>
     </div>
+
+    <script>
+        let users = JSON.parse(localStorage.getItem("users")) || [];
+        
+        function validateForm(event){
+            event.preventDefault();
+            let email = document.forms["RegForm"]["EMail"].value;
+            let password = document.forms["RegForm"]["Password"].value;
+            
+            if(email === ""){
+                alert("Please enter your email");
+                return false;
+            }
+            if(password === ""){
+                alert("Please enter your password");
+                return false;
+            }
+            
+            if(users.some(user => user.email === email && user.password === password)){
+                alert("Login Successful!!!");
+                window.location.href = "/welcome.html";
+            } else {
+                alert("Invalid Email or Password");
+            }
+            return false;
+        }
+    </script>
 </body>
 </html>

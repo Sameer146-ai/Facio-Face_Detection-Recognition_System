@@ -1,4 +1,4 @@
-/* Reset & Global Styling */
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -8,10 +8,10 @@
 body {
     position: relative;
     font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4; /* Fallback color */
+    background-color: #f4f4f4; 
     background-image:
         linear-gradient(135deg, rgba(10, 11, 11, 0.37), rgba(12, 12, 12, 0.3)),
-        url('pixelcut-export.png'); /* Update this path to match your image location */
+        url('pixelcut-export.png'); 
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -46,17 +46,16 @@ body {
     font-style: italic;
     color: rgb(194, 38, 38);
 }
-/* Centering the Container */
+
 .container {
     display: flex;
     position: relative;
-    /* justify-content: center; */
     align-items: center;
     height: 100vh;
     padding: 20px;
 }
 
-/* Styling the Form and Results */
+
 .form-container, .result-container {
     position: absolute;
     background: linear-gradient(135deg, #ffffff, #f0f4ff);
@@ -74,7 +73,7 @@ body {
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* Headings */
+
 h2 {
     margin-bottom: 20px;
     text-align: center;
@@ -83,7 +82,7 @@ h2 {
     font-weight: bold;
 }
 
-/* Form Elements */
+
 input[type="text"],
 input[type="password"],
 input[type="file"],
@@ -125,7 +124,7 @@ button:hover {
     transform: translateY(-2px);
 }
 
-/* Links Styling */
+
 .links {
     text-align: center;
     margin-top: 15px;
@@ -143,7 +142,7 @@ button:hover {
     text-decoration: underline;
 }
 
-/* Results Styling */
+
 .result-container {
     text-align: center;
 }
@@ -171,4 +170,4 @@ button:hover {
 .result-container a:hover {
     background: linear-gradient(135deg, #1c387d, #2d57a0);
     transform: translateY(-2px);
-}
+} 

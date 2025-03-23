@@ -1,119 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FACIO - Face & Image Recognition</title>
-    <link rel="stylesheet" href="upload.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-</head>
-<body>
-
+    <link rel="stylesheet" href="upload.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
     <!-- Background Overlay -->
     <div class="background-overlay"></div>
 
     <!-- Logo Section -->
     <div class="logo-container">
-        <img src="/assets/logo-modern.png" alt="FACIO Logo" class="logo">
-        <h1>Face & Image Recognition System</h1>
+      <img src="/assets/logo-modern.png" alt="FACIO Logo" class="logo" />
+      <h1>Face & Image Recognition System</h1>
     </div>
 
     <div class="main-container">
-        <div class="content">
-            
-            <!-- Face Detection -->
-            <div class="container">
-                <h2>Face Detection</h2>
-                <div class="upload-box">
-                    <input type="file" id="faceUpload" accept="image/*">
-                    <label for="faceUpload">Choose an Image</label>
-                </div>
-                <div class="image-preview" id="facePreview">
-                    <p>No image uploaded</p>
-                </div>
-                <button class="delete-btn" onclick="deleteImage('facePreview')">Delete</button>
-                <button class="submit-btn" onclick="submitImage('Face Detection')">Submit</button>
-            </div>
-
-            <!-- Image Description -->
-            <div class="container">
-                <h2>Image Description</h2>
-                <div class="upload-box">
-                    <input type="file" id="descUpload" accept="image/*">
-                    <label for="descUpload">Choose an Image</label>
-                </div>
-                <div class="image-preview" id="descPreview">
-                    <p>No image uploaded</p>
-                </div>
-                <button class="delete-btn" onclick="deleteImage('facePreview')">Delete</button>
-                <button class="submit-btn" onclick="submitImage('Image Description')">Submit</button>
-            </div>
-
-            <!-- Facial Expression Analysis -->
-            <div class="container">
-                <h2>Facial Expression Analysis</h2>
-                <div class="upload-box">
-                    <input type="file" id="expressionUpload" accept="image/*">
-                    <label for="expressionUpload">Choose an Image</label>
-                </div>
-                <div class="image-preview" id="expressionPreview">
-                    <p>No image uploaded</p>
-                </div>
-                <button class="delete-btn" onclick="deleteImage('facePreview')">Delete</button>
-                <button class="submit-btn" onclick="submitImage('Facial Expression Analysis')">Submit</button>
-            </div>
-
-            <!-- Celebrity Detection -->
-            <div class="container">
-                <h2>Celebrity Detection</h2>
-                <div class="upload-box">
-                    <input type="file" id="celebrityUpload" accept="image/*">
-                    <label for="celebrityUpload">Choose an Image</label>
-                </div>
-                <div class="image-preview" id="celebrityPreview">
-                    <p>No image uploaded</p>
-                </div>
-                <button class="delete-btn" onclick="deleteImage('facePreview')">Delete</button>
-                <button class="submit-btn" onclick="submitImage('Celebrity Detection')">Submit</button>
-            </div>
-
+      <div class="content">
+        <!-- Face Detection -->
+        <div class="container">
+          <h2>Face Detection</h2>
+          <div class="upload-box">
+            <input type="file" id="faceUpload" accept="image/*" />
+            <label for="faceUpload">Choose an Image</label>
+          </div>
+          <div class="image-preview" id="facePreview">
+            <p>No image uploaded</p>
+          </div>
+          <button class="delete-btn" onclick="deleteImage('facePreview')">
+            Delete
+          </button>
+          <button class="submit-btn" onclick="handleSubmit('faceUpload')">
+            Submit
+          </button>
         </div>
+
+        <!-- Image Description -->
+        <div class="container">
+          <h2>Image Description</h2>
+          <div class="upload-box">
+            <input type="file" id="descUpload" accept="image/*" />
+            <label for="descUpload">Choose an Image</label>
+          </div>
+          <div class="image-preview" id="descPreview">
+            <p>No image uploaded</p>
+          </div>
+          <button class="delete-btn" onclick="deleteImage('facePreview')">
+            Delete
+          </button>
+          <button class="submit-btn" onclick="handleSubmit('descUpload')">
+            Submit
+          </button>
+        </div>
+
+        <!-- Facial Expression Analysis -->
+        <div class="container">
+          <h2>Facial Expression Analysis</h2>
+          <div class="upload-box">
+            <input type="file" id="expressionUpload" accept="image/*" />
+            <label for="expressionUpload">Choose an Image</label>
+          </div>
+          <div class="image-preview" id="expressionPreview">
+            <p>No image uploaded</p>
+          </div>
+          <button class="delete-btn" onclick="deleteImage('facePreview')">
+            Delete
+          </button>
+          <button class="submit-btn" onclick="handleSubmit('expressionUpload')">
+            Submit
+          </button>
+        </div>
+
+        <!-- Celebrity Detection -->
+        <div class="container">
+          <h2>Celebrity Detection</h2>
+          <div class="upload-box">
+            <input type="file" id="celebrityUpload" accept="image/*" />
+            <label for="celebrityUpload">Choose an Image</label>
+          </div>
+          <div class="image-preview" id="celebrityPreview">
+            <p>No image uploaded</p>
+          </div>
+          <button class="delete-btn" onclick="deleteImage('facePreview')">
+            Delete
+          </button>
+          <button class="submit-btn" onclick="handleSubmit('celebrityUpload')">
+            Submit
+          </button>
+        </div>
+
+        <div
+          id="apiResponse"
+          style="margin-top: 20px; padding: 10px; border: 1px solid #ddd"
+        >
+          <strong>Response:</strong>
+          <span id="responseText">Here You See Your Response....⬇️</span>
+        </div>
+      </div>
     </div>
 
     <script>
-        function previewImage(inputId, previewId) {
-            const uploadInput = document.getElementById(inputId);
-            const previewDiv = document.getElementById(previewId);
+      function previewImage(inputId, previewId) {
+        const uploadInput = document.getElementById(inputId);
+        const previewDiv = document.getElementById(previewId);
 
-            uploadInput.addEventListener("change", function () {
-                const file = this.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function (event) {
-                        previewDiv.innerHTML = `<img src="${event.target.result}" alt="Uploaded Image">`;
-                    };
-                    reader.readAsDataURL(file);
-                } else {
-                    previewDiv.innerHTML = `<p>No image uploaded</p>`;
-                }
-            });
+        uploadInput.addEventListener("change", function () {
+          const file = this.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+              previewDiv.innerHTML = `<img src="${event.target.result}" alt="Uploaded Image">`;
+            };
+            reader.readAsDataURL(file);
+          } else {
+            previewDiv.innerHTML = `<p>No image uploaded</p>`;
+          }
+        });
+      }
+
+      function deleteImage(previewId) {
+        document.getElementById(
+          previewId
+        ).innerHTML = `<p>No image uploaded</p>`;
+      }
+
+      function submitImage(type) {
+        alert(`Image submitted for ${type}!`);
+      }
+
+      // Attach event listeners to all inputs
+      previewImage("faceUpload", "facePreview");
+      previewImage("descUpload", "descPreview");
+      previewImage("expressionUpload", "expressionPreview");
+      previewImage("celebrityUpload", "celebrityPreview");
+
+      function handleSubmit(inputId) {
+        console.log("🖼 Handling submit for input:", inputId);
+
+        const fileInput = document.getElementById(inputId);
+        if (!fileInput || !fileInput.files.length) {
+          console.error("❌ No file selected!");
+          alert("Please select an image before submitting.");
+          return;
         }
 
+        console.log("📤 Submitting file:", fileInput.files[0].name);
 
-        function deleteImage(previewId) {
-            document.getElementById(previewId).innerHTML = `<p>No image uploaded</p>`;
-        }
-
-        function submitImage(type) {
-            alert(`Image submitted for ${type}!`);
-        }
-
-        // Attach event listeners to all inputs
-        previewImage("faceUpload", "facePreview");
-        previewImage("descUpload", "descPreview");
-        previewImage("expressionUpload", "expressionPreview");
-        previewImage("celebrityUpload", "celebrityPreview");
+        console.log("🚀 Calling submitImage()");
+        submitImage(inputId); // Ensure this function is executed
+      }
     </script>
-
-</body>
+    <script>
+      console.log("JavaScript is loaded and running!");
+    </script>
+    <script type="module" src="upload.js" defer></script>
+  </body>
 </html>
