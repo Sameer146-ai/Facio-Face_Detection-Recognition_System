@@ -1,111 +1,225 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login - Face Recognition</title>
-    <link rel="stylesheet" href="login_register.css">
+    <link rel="stylesheet" href="login_register.css" />
     <style>
-        .form-container {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(15px);
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            width: 500px;
-            margin: auto;
-            margin-left: 60px;
-        }
-        .form-container h2 {
-            color: #c79529;
-            margin-bottom: 20px;
-            font-size: 24px;
-        }
-        .form-container input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: none;
-            border-radius: 5px;
-            outline: none;
-            transition: 0.3s;
-        }
-        .form-container input:focus {
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-        }
-        .form-container button {
-            width: 100%;
-            padding: 12px;
-            background: #ff5722;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 18px;
-            transition: 0.4s;
-        }
-        .form-container button:hover {
-            background: #e64a19;
-        }
-        .form-container .links {
-            margin-top: 15px;
-            display: flex;
-            justify-content: space-between;
-        }
-        .form-container .links a {
-            color: rgb(129, 199, 17);
-            text-decoration: none;
-            transition: 0.3s;
-        }
-        .form-container .links a:hover {
-            text-decoration: underline;
-        }
+      .form-container {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(15px);
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        width: 500px;
+        margin: auto;
+        margin-left: 60px;
+      }
+      .form-container h2 {
+        color: #c79529;
+        margin-bottom: 20px;
+        font-size: 24px;
+      }
+      .form-container input {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        border: none;
+        border-radius: 5px;
+        outline: none;
+        transition: 0.3s;
+      }
+      .form-container input:focus {
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+      }
+      .form-container button {
+        width: 100%;
+        padding: 12px;
+        background: #ff5722;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 18px;
+        transition: 0.4s;
+      }
+      .form-container button:hover {
+        background: #e64a19;
+      }
+      .form-container .links {
+        margin-top: 15px;
+        display: flex;
+        justify-content: space-between;
+      }
+      .form-container .links a {
+        color: rgb(129, 199, 17);
+        text-decoration: none;
+        transition: 0.3s;
+      }
+      .form-container .links a:hover {
+        text-decoration: underline;
+      }
     </style>
-</head>
-<body>
-    <img src="/assets/logo-modern.png" alt="" id="logo">
+  </head>
+  <body>
+    <img src="/assets/logo-modern.png" alt="" id="logo" />
     <div class="container">
-        <img src="/assets/front-bg-img.jpg" alt="" id="bg-img">
-        <div class="form-container">
-            <h2>Face & Image Recognition System</h2>
-            <form action="/welcome.html" name="RegForm" onsubmit="return validateForm(event)">
-                <input type="email" name="EMail" placeholder="Username" required>
-                <input type="password" name="Password" placeholder="Password" required>
-               <a href="welcome.html"><button type="submit">Login</button></a>
-            </form>
-            <div class="links">
-                <a href="/register.html">Register</a>
-                <a href="#">Forgot Password?</a>
-            </div>
+      <img src="/assets/front-bg-img.jpg" alt="" id="bg-img" />
+      <div class="form-container">
+        <h2>Face & Image Recognition System</h2>
+
+        <form
+          action="/welcome.html"
+          name="RegForm"
+          onsubmit="return validateForm(event)"
+        >
+          <input
+            type="email"
+            name="EMail"
+            id="email"
+            placeholder="Username"
+            autocomplete="username"
+            required
+          />
+          <small id="email-error" style="color: red; display: none"
+            >Please enter a valid email</small
+          >
+
+          <div style="position: relative">
+            <input
+              type="password"
+              name="Password"
+              id="password"
+              placeholder="Password"
+              autocomplete="current-password"
+              required
+            />
+            <span
+              id="togglePassword"
+              style="
+                position: absolute;
+                right: 10px;
+                top: 12px;
+                cursor: pointer;
+              "
+              >👁️</span
+            >
+          </div>
+          <small id="password-error" style="color: red; display: none"
+            >Please enter your password</small
+          >
+
+          <label> <input type="checkbox" id="rememberMe" /> Remember Me </label>
+
+          <button type="submit" id="login-btn">
+            <span id="btn-text">Login</span>
+            <span id="spinner" class="spinner" style="display: none"></span>
+          </button>
+
+          <p id="success-message" style="color: green; display: none">
+            Login Successful! Redirecting...
+          </p>
+        </form>
+
+        <div class="links">
+          <a href="/register.html">Register</a>
+          <a href="#">Forgot Password?</a>
         </div>
+      </div>
     </div>
 
     <script>
-        let users = JSON.parse(localStorage.getItem("users")) || [];
-        
-        function validateForm(event){
-            event.preventDefault();
-            let email = document.forms["RegForm"]["EMail"].value;
-            let password = document.forms["RegForm"]["Password"].value;
-            
-            if(email === ""){
-                alert("Please enter your email");
-                return false;
-            }
-            if(password === ""){
-                alert("Please enter your password");
-                return false;
-            }
-            
-            if(users.some(user => user.email === email && user.password === password)){
-                alert("Login Successful!!!");
-                window.location.href = "/welcome.html";
-            } else {
-                alert("Invalid Email or Password");
-            }
-            return false;
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // Auto-fill email if "Remember Me" was selected before
+        if (localStorage.getItem("rememberedEmail")) {
+          document.getElementById("email").value =
+            localStorage.getItem("rememberedEmail");
+          document.getElementById("rememberMe").checked = true;
         }
+
+        // Toggle password visibility
+        document
+          .getElementById("togglePassword")
+          .addEventListener("click", () => {
+            let passwordField = document.getElementById("password");
+            if (passwordField.type === "password") {
+              passwordField.type = "text";
+              document.getElementById("togglePassword").innerText = "🙈";
+            } else {
+              passwordField.type = "password";
+              document.getElementById("togglePassword").innerText = "👁️";
+            }
+          });
+      });
+
+      function validateForm(event) {
+        event.preventDefault();
+        let email = document.getElementById("email").value;
+        let password = document.getElementById("password").value;
+
+        let emailError = document.getElementById("email-error");
+        let passwordError = document.getElementById("password-error");
+        let successMessage = document.getElementById("success-message");
+
+        let loginBtn = document.getElementById("login-btn");
+        let btnText = document.getElementById("btn-text");
+        let spinner = document.getElementById("spinner");
+
+        // Reset error messages
+        emailError.style.display = "none";
+        passwordError.style.display = "none";
+        successMessage.style.display = "none";
+
+        if (email === "") {
+          emailError.innerText = "Please enter your email";
+          emailError.style.display = "block";
+          return false;
+        }
+        if (password === "") {
+          passwordError.innerText = "Please enter your password";
+          passwordError.style.display = "block";
+          return false;
+        }
+
+        let users = JSON.parse(localStorage.getItem("users")) || [];
+        let user = users.find(
+          (user) => user.email === email && user.password === password
+        );
+
+        if (user) {
+          // Show loading animation
+          btnText.style.display = "none";
+          spinner.style.display = "inline-block";
+          loginBtn.disabled = true;
+
+          // Store email if "Remember Me" is checked
+          if (document.getElementById("rememberMe").checked) {
+            localStorage.setItem("rememberedEmail", email);
+          } else {
+            localStorage.removeItem("rememberedEmail");
+          }
+
+          successMessage.style.display = "block";
+
+          setTimeout(() => {
+            window.location.href = "/welcome.html";
+          }, 1500);
+        } else {
+          emailError.innerText = "Invalid Email or Password";
+          emailError.style.display = "block";
+
+          // Hide loading animation
+          btnText.style.display = "inline";
+          spinner.style.display = "none";
+          loginBtn.disabled = false;
+        }
+
+        return false;
+      }
     </script>
-</body>
+  </body>
 </html>

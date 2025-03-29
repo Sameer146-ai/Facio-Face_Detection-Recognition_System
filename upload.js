@@ -48,11 +48,11 @@ async function submitImage(inputId, taskType) {
         break;
       case "expression":
         promptText =
-          "Analyze the facial expressions in this image. and give in point wise to user and give the facial expression in percentage also in point wise and give a graph image also ";
+          "Analyze the facial expressions in this image. and give in point like in point (numbers,alphabets) wise to user and give the facial expression in percentage also in point wise and give a graph image also ";
         break;
       case "celebrity":
         promptText =
-          "Identify any celebrities in this image and give detail about its life in 200 words his DOB And about its profession ";
+          "Identify any celebrities in this image and give detail about its life in 300 words his DOB And about its profession ";
         break;
       default:
         console.error("❌ Unknown task type!");
@@ -128,3 +128,68 @@ document
 
 // Ensure script loads correctly
 console.log("✅ JavaScript is loaded and running!");
+
+
+
+async function handleFaceComparison() {
+  console.log("🔍 Comparing two faces...");
+
+  const fileInput1 = document.getElementById("faceCompare1");
+  const fileInput2 = document.getElementById("faceCompare2");
+
+  if (!fileInput1.files.length || !fileInput2.files.length) {
+    alert("⚠️ Please upload both images before comparing.");
+    return;
+  }
+
+  const image1 = await convertToBase64(fileInput1.files[0]);
+  const image2 = await convertToBase64(fileInput2.files[0]);
+
+  const requestData = {
+    contents: [
+      {
+        role: "user",
+        parts: [
+          { text: "Compare the similarity between these two faces and provide a similarity score." },
+          { inlineData: { data: image1, mimeType: fileInput1.files[0].type } },
+          { inlineData: { data: image2, mimeType: fileInput2.files[0].type } },
+        ],
+      },
+    ],
+  };
+
+  try {
+    document.getElementById("responseText").innerText = "🔄 Processing...";
+    
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestData),
+      }
+    );
+
+    const responseData = await response.json();
+    console.log("📡 API Response:", responseData);
+
+    const resultText =
+      responseData.candidates?.[0]?.content?.parts
+        ?.map((part) => part.text)
+        .join(" ") || "⚠️ No relevant data found.";
+
+    document.getElementById("responseText").innerText = `🔍 Similarity Score: ${resultText}`;
+  } catch (error) {
+    console.error("❌ API Error:", error);
+    document.getElementById("responseText").innerText = "⚠️ Error comparing faces.";
+  }
+}
+
+function convertToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result.split(",")[1]);
+    reader.onerror = (error) => reject(error);
+    reader.readAsDataURL(file);
+  });
+}

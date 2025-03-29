@@ -5,31 +5,175 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Facio UI</title>
     <link rel="stylesheet" href="welcome.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    >
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/a076d05399.js"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
     <nav>
       <div class="nav-container">
         <img src="/assets/logo-modern.png" alt="Logo" id="logo" />
         <ul class="nav-links">
-          <li><a href="#">Home🏠</a></li>
+          <li><a href="/welcome.html">Home🏠</a></li>
           <li><a href="/upload.html">Services📇</a></li>
           <li><a href="/about.html">About📌</a></li>
-          <li><a href="#">Profile👦</a></li>
+          <button id="darkModeToggle">🌙 Dark Mode</button>
+
+          <!-- <li><a href="#">Profile👦</a></li> -->
         </ul>
       </div>
     </nav>
-    
+
     <div class="hero-section">
       <div class="hero-content">
         <h1 class="welcome-text">Welcome to <span>FACIO</span></h1>
         <h2 class="heading">"Precision Detection, Seamless Recognition."</h2>
-        <a href="/upload.html"><button class="get-started-btn">Get Started</button></a>
+        <a href="/upload.html"
+          ><button class="get-started-btn">Get Started</button></a
+        >
       </div>
       <div class="hero-image">
-        <img src="/assets/facio-logo.webp" alt="Face Detection" id="face_ui_logo" />
+        <img
+          src="/assets/facio-logo.webp"
+          alt="Face Detection"
+          id="face_ui_logo"
+        />
       </div>
     </div>
+    <section class="about-section">
+      <h1>What Does <span>FACIO</span> Do For You?</h1>
+      <p>
+        Facio is an advanced AI-powered face recognition and analysis tool that
+        detects faces, identifies celebrities, and provides image descriptions
+        and emotion analysis.
+      </p>
+    </section>
+
+    <div class="image_section_div">
+      <div class="about-image-section">
+        <img
+          src="/assets/about_1.webp"
+          alt="Face Detection"
+          class="animated-image"
+        />
+        <h3>Face Detection</h3>
+        <p>
+          Identifies human faces in images and plays a key role in recognition
+          systems.
+        </p>
+      </div>
+      <div class="about-image-section">
+        <img
+          src="/assets/about_2.webp"
+          alt="Image Description"
+          class="animated-image"
+        />
+        <h3>Image Description</h3>
+        <p>
+          Generates a meaningful textual explanation of an image using AI vision
+          models.
+        </p>
+      </div>
+      <div class="about-image-section">
+        <img
+          src="/assets/about_3.webp"
+          alt="Facial Expression Analysis"
+          class="animated-image"
+        />
+        <h3>Facial Expression Analysis</h3>
+        <p>
+          Recognizes emotions like happiness, sadness, and surprise using
+          AI-based analysis.
+        </p>
+      </div>
+      <div class="about-image-section">
+        <img
+          src="/assets/about_4.webp"
+          alt="Celebrity Detection"
+          class="animated-image"
+        />
+        <h3>Celebrity Detection</h3>
+        <p>
+          Recognizes well-known figures and provides their details based on
+          facial analysis.
+        </p>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-logo">
+          <h2>Facio</h2>
+          <p>Face Recognition & Analysis System</p>
+        </div>
+        <div class="footer-links">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="/welcome.html">Home</a></li>
+            <li><a href="/about.html">About</a></li>
+            <li><a href="/upload.html">Features</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-social">
+          <h3>Follow Us</h3>
+          <ul>
+            <li>
+              <a href="#"><i class="fab fa-facebook"></i></a>
+            </li>
+            <li>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+            </li>
+            <li>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+            </li>
+            <li>
+              <a href="#"><i class="fab fa-linkedin"></i></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 Facio. All Rights Reserved.</p>
+      </div>
+    </footer>
+    <button id="backToTop">⬆️ Top</button>
+
+    <script>
+      // dark mode toggle
+      const darkModeToggle = document.getElementById("darkModeToggle");
+      const body = document.body;
+
+      darkModeToggle.addEventListener("click", () => {
+        body.classList.toggle("dark-mode");
+        if (body.classList.contains("dark-mode")) {
+          darkModeToggle.innerText = "☀️ Light Mode";
+        } else {
+          darkModeToggle.innerText = "🌙 Dark Mode";
+        }
+      });
+
+      // back to top button
+      const backToTop = document.getElementById("backToTop");
+
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 300) {
+          backToTop.style.display = "block";
+        } else {
+          backToTop.style.display = "none";
+        }
+      });
+
+      backToTop.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    </script>
   </body>
 </html>
