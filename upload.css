@@ -14,6 +14,28 @@ body {
   min-height: 100vh;
 }
 
+/* Home button css */
+.home-button {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  background-color: #2b78e4;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-family: 'Roboto', sans-serif;
+}
+
+.home-button:hover {
+  background-color: #1a5fb4;
+  transform: scale(1.05);
+}
+
 .background-overlay {
   position: absolute;
   top: 0;
