@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Real-Time Emotion Tracker</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      :root {
+        --bg-color-dark: #1c1c1c;
+        --text-color-dark: #fff;
+        --bg-color-light: #ffffff;
+        --text-color-light: #111;
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: var(--bg-color-dark);
+        color: var(--text-color-dark);
+        font-family: Arial, sans-serif;
+        transition: background 0.5s, color 0.5s;
+        overflow: hidden;
+        max-height: 100vh;
+        margin: 0;
+        padding: 0;
+      }
+
+      body.light-mode {
+        background: var(--bg-color-light);
+        color: var(--text-color-light);
+      }
+
+      h1 {
+        margin-top: 20px;
+      }
+
+      #video-container {
+        display: flex;
+        margin-top: 20px;
+        position: relative;
+        max-width: 100%;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      video {
+        border: 4px solid #444;
+        border-radius: 10px;
+        max-width: 100%;
+      }
+
+      canvas#overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+
+      #mood {
+        font-size: 2rem;
+        margin: 16px auto 10px;
+        font-weight: bold;
+        color: #00ffd0;
+        text-shadow: 1px 1px 2px #000;
+        text-align: center;
+        max-width: 100%;
+        overflow-wrap: break-word;
+      }
+
+      body.light-mode #mood {
+        color: #0077cc;
+        text-shadow: none;
+      }
+
+      #leftControls {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        margin-right: 20px;
+        width: 200px;
+        padding: 10px;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      #micBtn {
+        font-size: 1.1rem;
+        padding: 8px 12px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        width: 100%;
+      }
+
+      #transcript {
+        font-size: 0.9rem;
+        max-height: 150px;
+        overflow-y: auto;
+        word-wrap: break-word;
+      }
+
+      #history {
+        margin-left: 20px;
+        width: 200px;
+        max-height: 400px;
+        overflow-y: auto;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 10px;
+        border-radius: 10px;
+        font-size: 0.9rem;
+      }
+
+      #history h3 {
+        margin: 0 0 10px;
+        font-size: 1.1rem;
+      }
+
+      #historyList {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      #historyList li {
+        margin-bottom: 6px;
+        border-bottom: 1px solid #555;
+        padding-bottom: 4px;
+      }
+
+      #modeToggle {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        padding: 8px 14px;
+        font-size: 0.9rem;
+        cursor: pointer;
+        border-radius: 8px;
+      }
+
+      #smartAnalysis {
+        margin-left: 20px;
+        width: 250px;
+        padding: 10px;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      #smartAnalysis h3 {
+        margin-top: 0;
+        font-size: 1.1rem;
+      }
+
+      #chart-container {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 250px;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 10px;
+        border-radius: 10px;
+        margin: 10px;
+      }
+
+      #chart-container canvas {
+        width: 100% !important;
+        height: auto !important;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🎭 Real-Time Emotion Tracker</h1>
+    <button id="modeToggle">🌞 Light Mode</button>
+
+    <div id="video-container">
+      <!-- Left controls -->
+      <div id="leftControls">
+        <button id="micBtn">🎤 Start Listening</button>
+        <div id="transcript">Transcript will appear here...</div>
+      </div>
+
+      <!-- Video & overlay -->
+      <div style="position: relative">
+        <video id="video" width="720" height="560" autoplay muted></video>
+        <canvas id="overlay"></canvas>
+      </div>
+
+      <!-- Right Analysis -->
+      <div id="smartAnalysis">
+        <h3>📊 Smart Analysis</h3>
+        <p><strong>Avg Mood Today:</strong> <span id="avgMood">-</span></p>
+        <p>
+          <strong>Most Frequent Emotion:</strong>
+          <span id="mostFrequent">-</span>
+        </p>
+        <p><strong>Face Detections:</strong> <span id="faceCount">0</span></p>
+        <p><strong>Session Time:</strong> <span id="sessionTime">0s</span></p>
+      </div>
+
+      <!-- Bottom-Left Chart -->
+      <div id="chart-container">
+        <canvas id="moodChart"></canvas>
+      </div>
+
+      <!-- Mood History -->
+      <div id="history">
+        <h3>🕒 Mood History</h3>
+        <ul id="historyList"></ul>
+      </div>
+    </div>
+
+    <!-- Moved here -->
+    <div id="mood">Detecting...</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+    <script>
+      const video = document.getElementById("video");
+      const canvas = document.getElementById("overlay");
+      const moodDisplay = document.getElementById("mood");
+      const micBtn = document.getElementById("micBtn");
+      const transcriptDiv = document.getElementById("transcript");
+      const modeToggle = document.getElementById("modeToggle");
+      const historyList = document.getElementById("historyList");
+      const avgMoodSpan = document.getElementById("avgMood");
+      const mostFrequentSpan = document.getElementById("mostFrequent");
+      const faceCountSpan = document.getElementById("faceCount");
+      const sessionTimeSpan = document.getElementById("sessionTime");
+
+      let recognition;
+      let listening = false;
+      let lastLoggedMood = "";
+      let emotionCounts = {};
+      let faceDetections = 0;
+      let startTime = Date.now();
+
+      const emojiMap = {
+        neutral: "😐",
+        happy: "😄",
+        sad: "😢",
+        angry: "😠",
+        fearful: "😨",
+        disgusted: "🤢",
+        surprised: "😲",
+      };
+
+      const chartCtx = document.getElementById("moodChart").getContext("2d");
+      const moodChart = new Chart(chartCtx, {
+        type: "bar",
+        data: {
+          labels: [],
+          datasets: [
+            {
+              label: "Emotion Frequency",
+              backgroundColor: "rgba(255, 255, 255, 0.6)",
+              borderColor: "#333",
+              data: [],
+            },
+          ],
+        },
+        options: {
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { beginAtZero: true },
+          },
+        },
+      });
+
+      async function startApp() {
+        await faceapi.nets.tinyFaceDetector.loadFromUri(
+          "./models/tiny_face_detector"
+        );
+        await faceapi.nets.faceExpressionNet.loadFromUri(
+          "./models/face_expression"
+        );
+
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: {},
+          });
+          video.srcObject = stream;
+        } catch (err) {
+          console.error("Camera error:", err);
+        }
+      }
+
+      function setupSpeechRecognition() {
+        const SpeechRecognition =
+          window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+          transcriptDiv.innerText = "Speech recognition not supported 😢";
+          return;
+        }
+
+        recognition = new SpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+
+        recognition.onresult = (event) => {
+          let transcript = "";
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            transcript += event.results[i][0].transcript;
+          }
+          transcriptDiv.innerText = transcript;
+
+          const command = transcript.toLowerCase();
+          if (command.includes("detect again")) startApp();
+          else if (command.includes("pause music"))
+            console.log("🔇 Music paused (placeholder)");
+          else if (command.includes("switch to dark mode")) {
+            document.body.classList.remove("light-mode");
+            modeToggle.textContent = "🌞 Light Mode";
+          } else if (command.includes("switch to light mode")) {
+            document.body.classList.add("light-mode");
+            modeToggle.textContent = "🌙 Dark Mode";
+          } else if (command.includes("start camera")) {
+            const stream = video.srcObject;
+            if (!stream) startApp();
+          } else if (command.includes("stop camera")) {
+            const stream = video.srcObject;
+            if (stream) {
+              const tracks = stream.getTracks();
+              tracks.forEach((track) => track.stop());
+              video.srcObject = null;
+            }
+          } else if (
+            command.includes("what's my mood") ||
+            command.includes("what is my mood")
+          ) {
+            alert(`Your current mood is: ${moodDisplay.innerText}`);
+          } else if (command.includes("clear history")) {
+            historyList.innerHTML = "";
+            emotionCounts = {};
+            moodChart.data.labels = [];
+            moodChart.data.datasets[0].data = [];
+            moodChart.update();
+          }
+        };
+
+        recognition.onend = () => {
+          if (listening) recognition.start();
+        };
+      }
+
+      micBtn.addEventListener("click", () => {
+        if (!recognition) setupSpeechRecognition();
+
+        if (!listening) {
+          recognition.start();
+          micBtn.textContent = "🛑 Stop Listening";
+          listening = true;
+        } else {
+          recognition.stop();
+          micBtn.textContent = "🎤 Start Listening";
+          listening = false;
+        }
+      });
+
+      modeToggle.addEventListener("click", () => {
+        document.body.classList.toggle("light-mode");
+        const isLight = document.body.classList.contains("light-mode");
+        modeToggle.textContent = isLight ? "🌙 Dark Mode" : "🌞 Light Mode";
+      });
+
+      video.addEventListener("play", () => {
+        const displaySize = { width: video.width, height: video.height };
+        faceapi.matchDimensions(canvas, displaySize);
+
+        setInterval(async () => {
+          const detections = await faceapi
+            .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
+            .withFaceExpressions();
+
+          const resizedDetections = faceapi.resizeResults(
+            detections,
+            displaySize
+          );
+          canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+          faceapi.draw.drawDetections(canvas, resizedDetections);
+          faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
+
+          if (detections.length > 0) {
+            faceDetections++;
+            const expressions = detections[0].expressions;
+            const maxValue = Math.max(...Object.values(expressions));
+            const emotion = Object.keys(expressions).find(
+              (key) => expressions[key] === maxValue
+            );
+
+            moodDisplay.innerText = `Current Mood: ${emotion} ${
+              emojiMap[emotion] || ""
+            }`;
+
+            // Track emotion frequency
+            emotionCounts[emotion] = (emotionCounts[emotion] || 0) + 1;
+            updateSmartPanel();
+
+            if (lastLoggedMood !== emotion) {
+              lastLoggedMood = emotion;
+              const now = new Date();
+              const time = now.toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              });
+              const item = document.createElement("li");
+              item.textContent = `🕒 ${time} - ${emotion} ${
+                emojiMap[emotion] || ""
+              }`;
+              historyList.prepend(item);
+              if (historyList.children.length > 20) {
+                historyList.removeChild(historyList.lastChild);
+              }
+            }
+          } else {
+            moodDisplay.innerText = "No face detected 😶";
+          }
+
+          sessionTimeSpan.textContent = `${Math.floor(
+            (Date.now() - startTime) / 1000
+          )}s`;
+          faceCountSpan.textContent = faceDetections;
+        }, 300);
+      });
+
+      function updateSmartPanel() {
+        const total = Object.values(emotionCounts).reduce((a, b) => a + b, 0);
+        if (total === 0) return;
+
+        const avg = (((emotionCounts.happy || 0) / total) * 100).toFixed(1);
+        avgMoodSpan.textContent = `${avg}% Happy`;
+
+        const most = Object.entries(emotionCounts).sort(
+          (a, b) => b[1] - a[1]
+        )[0];
+        mostFrequentSpan.textContent = `${most[0]} ${emojiMap[most[0]]}`;
+
+        moodChart.data.labels = Object.keys(emotionCounts);
+        moodChart.data.datasets[0].data = Object.values(emotionCounts);
+        moodChart.update();
+      }
+
+      startApp();
+    </script>
+  </body>
+</html>
