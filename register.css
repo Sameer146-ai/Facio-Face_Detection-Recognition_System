@@ -1,0 +1,127 @@
+/* Background & Layout */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", sans-serif;
+    height: 100%;
+    width: 100%;
+    background: url("/assets/front-bg-img.jpg") no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  
+  /* Form Container */
+  .form-container {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 40px;
+    margin: 30px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    animation: slideIn 0.6s ease-out;
+  }
+  
+  @keyframes slideIn {
+    from {
+      transform: translateX(-50px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  h2 {
+    color: #1c58b9;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+  }
+  
+  /* Inputs */
+  input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+    font-size: 16px;
+  }
+  
+  input:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(45, 87, 160, 0.8);
+  }
+  
+  /* Button */
+  button {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #2d57a0, #1c387d);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  button:hover {
+    background: linear-gradient(135deg, #1c387d, #2d57a0);
+  }
+  
+  /* Links */
+  .links {
+    margin-top: 15px;
+    font-size: 14px;
+  }
+  
+  .links a {
+    color: #fc1818;
+    text-decoration: none;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+  }
+  
+  .links a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    body {
+      justify-content: center;
+      padding: 10px;
+    }
+  
+    .form-container {
+      margin: 0;
+      width: 100%;
+    }
+  
+    h2 {
+      font-size: 1.5rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .form-container {
+      padding: 25px;
+    }
+  
+    input, button {
+      font-size: 14px;
+      padding: 10px;
+    }
+  
+    .links {
+      font-size: 13px;
+    }
+  }
+  
